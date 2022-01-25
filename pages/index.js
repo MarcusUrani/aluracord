@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import appConfig from "../config.json";
 import Title from "../Components/Title";
 import { useRouter } from "next/router";
-import FotoPadrao from "../img/user.png";
 import PaginaChat from "./chat";
 
 const PaginaInicial = () => {
