@@ -1,18 +1,26 @@
 import { Box, Button, Text, TextField, Image } from "@skynexui/components";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import appConfig from "../config.json";
-import GlobalStyle from "../Components/GlobalStyle";
 import Title from "../Components/Title";
 import { useRouter } from "next/router";
 import PaginaChat from "./chat";
 
 const PaginaInicial = () => {
   const [username, setUsername] = useState("");
+  const [location, setLocation] = useState("");
+  const [data, setData] = useState({});
   const router = useRouter();
+
+  const getData = async (valor) => {
+    await fetch(`https://api.github.com/users/${valor}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      });
+  };
 
   return (
     <>
-      <GlobalStyle />
       <Box
         styleSheet={{
           display: "flex",
@@ -50,7 +58,6 @@ const PaginaInicial = () => {
             onSubmit={function (event) {
               event.preventDefault();
               router.push("/chat");
-              // console.log("foi clicado");
             }}
             styleSheet={{
               display: "flex",
@@ -77,6 +84,7 @@ const PaginaInicial = () => {
               onChange={function (event) {
                 const valor = event.target.value;
                 setUsername(valor);
+                getData(valor);
               }}
               fullWidth
               textFieldColors={{
@@ -135,6 +143,17 @@ const PaginaInicial = () => {
               }}
             >
               {username}
+            </Text>
+            <Text
+              variant="body4"
+              styleSheet={{
+                color: appConfig.theme.colors.neutrals[200],
+                backgroundColor: appConfig.theme.colors.neutrals[900],
+                padding: "3px 10px",
+                borderRadius: "1000px",
+              }}
+            >
+              {data.location}
             </Text>
           </Box>
           {/* Photo Area */}
