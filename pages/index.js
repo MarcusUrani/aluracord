@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react";
 import appConfig from "../config.json";
 import Title from "../Components/Title";
 import { useRouter } from "next/router";
+import FotoPadrao from "../img/user.png";
 import PaginaChat from "./chat";
 
 const PaginaInicial = () => {
   const [username, setUsername] = useState("");
-  const [location, setLocation] = useState("");
   const [data, setData] = useState({});
   const router = useRouter();
 
@@ -100,6 +100,7 @@ const PaginaInicial = () => {
               type="submit"
               label="Entrar"
               fullWidth
+              disabled={username < 3}
               buttonColors={{
                 contrastColor: appConfig.theme.colors.neutrals["000"],
                 mainColor: appConfig.theme.colors.primary[500],
