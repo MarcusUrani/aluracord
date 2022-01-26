@@ -6,7 +6,17 @@ import { useState } from "react/cjs/react.development";
 
 const ChatPage = () => {
   const [mensagem, setMensagem] = useState("");
-  const [messageArray, setMessageArray] = useState({});
+  const [listaMensagens, setListaMensagens] = useState([]);
+
+  const handleNovaMensagem = (novaMensagem) => {
+    const mensagem = {
+      id: listaMensagens.length + 1,
+      texto: novaMensagem,
+      de: "MarcusUrani",
+    };
+    setListaMensagens([mensagem, ...listaMensagens]);
+    setMensagem("");
+  };
   //Usuário digita no campo TextArea
   //Aperta ENTER para enviar
   //Adiciona a mensagem a lista de mensagens
@@ -14,8 +24,8 @@ const ChatPage = () => {
 
   /*
   [X] Campo criado
-  [] Utilizar OnChange para pegar o valor da mensagem(usar if caso Enter seja clicado)
-  [] Lista de mensagens
+  [X] Utilizar OnChange para pegar o valor da mensagem(usar if caso Enter seja clicado)
+  [X] Lista de mensagens
    */
 
   return (
@@ -59,8 +69,7 @@ const ChatPage = () => {
             padding: "16px",
           }}
         >
-          <MessageList />
-
+          <MessageList mensagens={listaMensagens} />
           <Box
             as="form"
             styleSheet={{
@@ -76,10 +85,8 @@ const ChatPage = () => {
               }}
               onKeyPress={(event) => {
                 if (event.key === "Enter") {
-                  let valor = event.target.value;
-                  setMessageArray(valor);
-                  console.log(messageArray);
-                  setMensagem("");
+                  event.preventDefault();
+                  handleNovaMensagem(mensagem);
                 }
               }}
               placeholder="Insira sua mensagem aqui..."
@@ -107,6 +114,8 @@ const MessageList = (props) => {
     <Box
       tag="ul"
       styleSheet={{
+        overflowY: "hidden",
+        overflowX: "hidden",
         overflow: "scroll",
         display: "flex",
         flexDirection: "column-reverse",
@@ -115,47 +124,65 @@ const MessageList = (props) => {
         marginBottom: "16px",
       }}
     >
-      <Text
-        // key={mensagem.id}
-        tag="li"
-        styleSheet={{
-          borderRadius: "5px",
-          padding: "6px",
-          marginBottom: "12px",
-          hover: {
-            backgroundColor: appConfig.theme.colors.neutrals[700],
-          },
-        }}
-      >
-        <Box
-          styleSheet={{
-            marginBottom: "8px",
-          }}
-        >
-          <Image
-            styleSheet={{
-              width: "20px",
-              height: "20px",
-              borderRadius: "50%",
-              display: "inline-block",
-              marginRight: "8px",
-            }}
-            src={`https://github.com/vanessametonini.png`}
-          />
-          {/* <Text tag="strong">{mensagem.de}</Text> */}
+      {props.mensagens.map((mensagem) => {
+        return (
           <Text
+            key={mensagem.id}
+            tag="li"
             styleSheet={{
-              fontSize: "10px",
-              marginLeft: "8px",
-              color: appConfig.theme.colors.neutrals[300],
+              borderRadius: "5px",
+              padding: "6px",
+              marginBottom: "12px",
+              hover: {
+                backgroundColor: appConfig.theme.colors.neutrals[700],
+              },
             }}
-            tag="span"
           >
-            {new Date().toLocaleDateString()}
+            <Box
+              styleSheet={{
+                marginBottom: "8px",
+              }}
+            >
+              <Image
+                styleSheet={{
+                  width: "20px",
+                  height: "20px",
+                  borderRadius: "50%",
+                  display: "inline-block",
+                  marginRight: "8px",
+                }}
+                src={`https://github.com/vanessametonini.png`}
+              />
+              <Text tag="strong">{mensagem.de}</Text>
+              <Text
+                styleSheet={{
+                  fontSize: "10px",
+                  marginLeft: "8px",
+                  color: appConfig.theme.colors.neutrals[300],
+                }}
+                tag="span"
+              >
+                {new Date().toLocaleDateString()}
+              </Text>
+              {/* <Button
+                label="X"
+                styleSheet={{
+                  color: appConfig.theme.colors.neutrals[300],
+                  backgroundColor: appConfig.theme.colors.neutrals[400],
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  padding: "5px",
+                  hover: {
+                    backgroundColor: appConfig.theme.colors.neutrals[500],
+                  },
+                }}
+              /> */}
+            </Box>
+            {mensagem.texto}
           </Text>
-        </Box>
-        {/* {mensagem.texto} */}
-      </Text>
+        );
+      })}
     </Box>
   );
 };
