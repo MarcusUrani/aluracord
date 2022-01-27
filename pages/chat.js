@@ -1,8 +1,85 @@
 import { Box, Text, TextField, Image, Button } from "@skynexui/components";
-import React from "react";
+import React, { useState } from "react";
 import appConfig from "../config.json";
 import Header from "../Components/Header";
-import { useState } from "react/cjs/react.development";
+
+const MessageList = (props) => {
+  return (
+    <Box
+      tag="ul"
+      styleSheet={{
+        overflowY: "hidden",
+        overflowX: "hidden",
+        overflow: "scroll",
+        display: "flex",
+        flexDirection: "column-reverse",
+        flex: 1,
+        color: appConfig.theme.colors.neutrals["000"],
+        marginBottom: "16px",
+      }}
+    >
+      {props.mensagens.map((mensagem) => {
+        return (
+          <Text
+            key={mensagem.id}
+            tag="li"
+            styleSheet={{
+              borderRadius: "5px",
+              padding: "6px",
+              marginBottom: "12px",
+              hover: {
+                backgroundColor: appConfig.theme.colors.neutrals[700],
+              },
+            }}
+          >
+            <Box
+              styleSheet={{
+                marginBottom: "8px",
+              }}
+            >
+              <Image
+                styleSheet={{
+                  width: "20px",
+                  height: "20px",
+                  borderRadius: "50%",
+                  display: "inline-block",
+                  marginRight: "8px",
+                }}
+                src={`https://github.com/vanessametonini.png`}
+              />
+              <Text tag="strong">{mensagem.de}</Text>
+              <Text
+                styleSheet={{
+                  fontSize: "10px",
+                  marginLeft: "8px",
+                  color: appConfig.theme.colors.neutrals[300],
+                }}
+                tag="span"
+              >
+                {new Date().toLocaleDateString()}
+              </Text>
+              {/* <Button
+                label="X"
+                styleSheet={{
+                  color: appConfig.theme.colors.neutrals[300],
+                  backgroundColor: appConfig.theme.colors.neutrals[400],
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  padding: "5px",
+                  hover: {
+                    backgroundColor: appConfig.theme.colors.neutrals[500],
+                  },
+                }}
+              /> */}
+            </Box>
+            {mensagem.texto}
+          </Text>
+        );
+      })}
+    </Box>
+  );
+};
 
 const ChatPage = () => {
   const [mensagem, setMensagem] = useState("");
@@ -105,84 +182,6 @@ const ChatPage = () => {
           </Box>
         </Box>
       </Box>
-    </Box>
-  );
-};
-
-const MessageList = (props) => {
-  return (
-    <Box
-      tag="ul"
-      styleSheet={{
-        overflowY: "hidden",
-        overflowX: "hidden",
-        overflow: "scroll",
-        display: "flex",
-        flexDirection: "column-reverse",
-        flex: 1,
-        color: appConfig.theme.colors.neutrals["000"],
-        marginBottom: "16px",
-      }}
-    >
-      {props.mensagens.map((mensagem) => {
-        return (
-          <Text
-            key={mensagem.id}
-            tag="li"
-            styleSheet={{
-              borderRadius: "5px",
-              padding: "6px",
-              marginBottom: "12px",
-              hover: {
-                backgroundColor: appConfig.theme.colors.neutrals[700],
-              },
-            }}
-          >
-            <Box
-              styleSheet={{
-                marginBottom: "8px",
-              }}
-            >
-              <Image
-                styleSheet={{
-                  width: "20px",
-                  height: "20px",
-                  borderRadius: "50%",
-                  display: "inline-block",
-                  marginRight: "8px",
-                }}
-                src={`https://github.com/vanessametonini.png`}
-              />
-              <Text tag="strong">{mensagem.de}</Text>
-              <Text
-                styleSheet={{
-                  fontSize: "10px",
-                  marginLeft: "8px",
-                  color: appConfig.theme.colors.neutrals[300],
-                }}
-                tag="span"
-              >
-                {new Date().toLocaleDateString()}
-              </Text>
-              {/* <Button
-                label="X"
-                styleSheet={{
-                  color: appConfig.theme.colors.neutrals[300],
-                  backgroundColor: appConfig.theme.colors.neutrals[400],
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  padding: "5px",
-                  hover: {
-                    backgroundColor: appConfig.theme.colors.neutrals[500],
-                  },
-                }}
-              /> */}
-            </Box>
-            {mensagem.texto}
-          </Text>
-        );
-      })}
     </Box>
   );
 };
