@@ -1,31 +1,46 @@
 import { Box, Text, TextField, Image, Button } from "@skynexui/components";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import appConfig from "../config.json";
 import Header from "../Components/Header";
+import { useRouter } from "next/router";
+import { createClient } from "@supabase/supabase-js";
+
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzMxMTc5NiwiZXhwIjoxOTU4ODg3Nzk2fQ.tsfta_yJ6nCUuEOSlZI6FVL1y1NIWq1P89rbfhAH-As";
+const SUPABASE_URL = "https://guegqoipzieisnegctqk.supabase.co";
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const ChatPage = () => {
   const [mensagem, setMensagem] = useState("");
   const [listaMensagens, setListaMensagens] = useState([]);
+  const roteamento = useRouter();
+  const username = roteamento.query.user;
 
   const handleNovaMensagem = (novaMensagem) => {
     const mensagem = {
-      id: listaMensagens.length + 1,
       texto: novaMensagem,
-      de: "MarcusUrani",
+      de: username,
     };
-    setListaMensagens([mensagem, ...listaMensagens]);
+
+    supabaseClient
+      .from("mensagens")
+      .insert([mensagem])
+      .then(({ data }) => {
+        setListaMensagens([data[0], ...listaMensagens]);
+      });
+
     setMensagem("");
   };
-  //Usuário digita no campo TextArea
-  //Aperta ENTER para enviar
-  //Adiciona a mensagem a lista de mensagens
-  //Exibe a mensagem
 
-  /*
-  [X] Campo criado
-  [X] Utilizar OnChange para pegar o valor da mensagem(usar if caso Enter seja clicado)
-  [X] Lista de mensagens
-   */
+  useEffect(() => {
+    supabaseClient
+      .from("mensagens")
+      .select("*")
+      .order("id", { ascending: false })
+      .then(({ data }) => {
+        setListaMensagens(data);
+      });
+  }, []);
 
   return (
     <Box
@@ -68,7 +83,7 @@ const ChatPage = () => {
             padding: "16px",
           }}
         >
-          <MessageList mensagens={listaMensagens} />
+          <MessageList mensagens={listaMensagens} username={username} />
           <Box
             as="form"
             styleSheet={{
@@ -112,6 +127,7 @@ const ChatPage = () => {
             />
             <Button
               colorVariant="dark"
+              size="xs"
               type="submit"
               iconName="arrowRight"
               styleSheet={{
@@ -171,7 +187,7 @@ const MessageList = (props) => {
                   display: "inline-block",
                   marginRight: "8px",
                 }}
-                src={`https://github.com/vanessametonini.png`}
+                src={`https://github.com/${mensagem.de}.png`}
               />
               <Text tag="strong">{mensagem.de}</Text>
               <Text
@@ -191,7 +207,7 @@ const MessageList = (props) => {
                   mainColor: appConfig.theme.colors.primary[500],
                   mainColorLight: appConfig.theme.colors.primary[400],
                   mainColorStrong: appConfig.theme.colors.primary[600],
-                  position: "absolute",
+                  position: "relative",
                   marginLeft: "1rem",
                   top: 0,
                   right: 0,
@@ -199,9 +215,7 @@ const MessageList = (props) => {
                 }}
                 onClick={(event) => {
                   event.preventDefault();
-                  props.mensagens.filter((mensagemSelecionada) => {
-                    console.log(props.mensagens[mensagemSelecionada.id - 1]);
-                  });
+                  handleDeletarMensagem();
                 }}
               /> */}
             </Box>

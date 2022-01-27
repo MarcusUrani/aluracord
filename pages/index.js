@@ -56,7 +56,10 @@ const PaginaInicial = () => {
             as="form"
             onSubmit={function (event) {
               event.preventDefault();
-              router.push("/chat");
+              router.push({
+                pathname: "/chat",
+                query: { user: username },
+              });
             }}
             styleSheet={{
               display: "flex",
