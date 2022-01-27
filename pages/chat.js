@@ -199,9 +199,9 @@ const MessageList = (props) => {
                 }}
                 onClick={(event) => {
                   event.preventDefault();
-                  event.currentTarget
-                  console.log(mensagemSelecionada);
-                  // props.mensagens.filter(handleDelete(mensagemSelecionada));
+                  props.mensagens.filter((mensagemSelecionada) => {
+                    console.log(props.mensagens[mensagemSelecionada.id - 1]);
+                  });
                 }}
               /> */}
             </Box>
