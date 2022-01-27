@@ -40,7 +40,7 @@ const ChatPage = () => {
       .then(({ data }) => {
         setListaMensagens(data);
       });
-  }, []);
+  }, [listaMensagens]);
 
   return (
     <Box
