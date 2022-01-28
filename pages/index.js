@@ -146,7 +146,16 @@ const PaginaInicial = () => {
                 borderRadius: "1000px",
               }}
             >
-              {username}
+              <a
+                rel="noreferrer"
+                target="_blank"
+                href={`https://github.com/${username}`}
+                style={{
+                  color: "#fff",
+                }}
+              >
+                {username}
+              </a>
             </Text>
             <Text
               variant="body4"

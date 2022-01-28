@@ -4,6 +4,7 @@ import appConfig from "../config.json";
 import Header from "../Components/Header";
 import { useRouter } from "next/router";
 import { createClient } from "@supabase/supabase-js";
+import { ButtonSendSticker } from "../Components/ButtonSendStickers";
 
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzMxMTc5NiwiZXhwIjoxOTU4ODg3Nzk2fQ.tsfta_yJ6nCUuEOSlZI6FVL1y1NIWq1P89rbfhAH-As";
@@ -11,10 +12,20 @@ const SUPABASE_URL = "https://guegqoipzieisnegctqk.supabase.co";
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const ChatPage = () => {
-  const [mensagem, setMensagem] = useState("");
-  const [listaMensagens, setListaMensagens] = useState([]);
   const roteamento = useRouter();
   const username = roteamento.query.user;
+  const [mensagem, setMensagem] = useState("");
+  const [listaMensagens, setListaMensagens] = useState([]);
+
+  useEffect(() => {
+    supabaseClient
+      .from("mensagens")
+      .select("*")
+      .order("id", { ascending: false })
+      .then(({ data }) => {
+        setListaMensagens(data);
+      });
+  }, [listaMensagens]);
 
   const handleNovaMensagem = (novaMensagem) => {
     const mensagem = {
@@ -31,16 +42,6 @@ const ChatPage = () => {
 
     setMensagem("");
   };
-
-  useEffect(() => {
-    supabaseClient
-      .from("mensagens")
-      .select("*")
-      .order("id", { ascending: false })
-      .then(({ data }) => {
-        setListaMensagens(data);
-      });
-  }, [listaMensagens]);
 
   return (
     <Box
@@ -131,15 +132,30 @@ const ChatPage = () => {
             />
             <Button
               colorVariant="dark"
-              size="xs"
               type="submit"
               iconName="arrowRight"
               styleSheet={{
+                borderRadius: "50%",
+                padding: "0 3px 0 0",
+                minWidth: "50px",
+                minHeight: "50px",
+                fontSize: "20px",
+                marginBottom: "8px",
+                lineHeight: "0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: appConfig.theme.colors.neutrals[300],
                 backgroundColor: appConfig.theme.colors.neutrals[400],
                 contrastColor: appConfig.theme.colors.neutrals["000"],
                 hover: {
                   backgroundColor: appConfig.theme.colors.neutrals[500],
                 },
+              }}
+            />
+            <ButtonSendSticker
+              onStickerClick={(sticker) => {
+                handleNovaMensagem(`:sticker:${sticker}`);
               }}
             />
             {/* {listaMensagens.length === 0 && (
@@ -246,7 +262,16 @@ const MessageList = (props) => {
                 {new Date().toLocaleDateString()}
               </Text>
             </Box>
-            {mensagem.texto}
+            {mensagem.texto.startsWith(":sticker:") ? (
+              <Image
+                style={{
+                  maxWidth: "30%",
+                }}
+                src={mensagem.texto.replace(":sticker:", "")}
+              />
+            ) : (
+              mensagem.texto
+            )}
           </Text>
         );
       })}
