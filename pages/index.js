@@ -4,7 +4,7 @@ import appConfig from "../config.json";
 import Title from "../Components/Title";
 import { useRouter } from "next/router";
 
-const defaultUsername = MarcusUrani;
+const defaultUsername = "MarcusUrani";
 
 const PaginaInicial = () => {
   const [username, setUsername] = useState(defaultUsername);
