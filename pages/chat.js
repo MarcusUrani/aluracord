@@ -83,7 +83,11 @@ const ChatPage = () => {
             padding: "16px",
           }}
         >
-          <MessageList mensagens={listaMensagens} username={username} />
+          <MessageList
+            mensagens={listaMensagens}
+            username={username}
+            setMensagens={setListaMensagens}
+          />
           <Box
             as="form"
             styleSheet={{
@@ -138,6 +142,9 @@ const ChatPage = () => {
                 },
               }}
             />
+            {/* {listaMensagens.length === 0 && (
+              
+            )} */}
           </Box>
         </Box>
       </Box>
@@ -146,6 +153,21 @@ const ChatPage = () => {
 };
 
 const MessageList = (props) => {
+  const handleDelete = (mensagem) => {
+    if (mensagem.de === appConfig.username) {
+      supabaseClient
+        .from("mensagens")
+        .delete()
+        .match({ id: mensagem.id })
+        .then(({ data }) => {
+          const mensagemFiltrada = props.mensagens.filter((messageFiltered) => {
+            return messageFiltered.id != data[0].id;
+          });
+          props.setMensagens(mensagemFiltrada);
+        });
+    }
+  };
+
   return (
     <Box
       tag="ul"
@@ -175,7 +197,30 @@ const MessageList = (props) => {
             }}
           >
             <Box
+              onClick={() => {
+                handleDelete(mensagem);
+              }}
               styleSheet={{
+                backgroundColor: appConfig.theme.colors.neutrals[500],
+                marginBottom: "8px",
+                width: "fit-content",
+                height: "auto",
+                padding: "4px 8px",
+                position: "relative",
+                float: "right",
+                borderRadius: "5px",
+                hover: {
+                  cursor: "pointer",
+                  backgroundColor: appConfig.theme.colors.neutrals[600],
+                  color: "white",
+                },
+              }}
+            >
+              Delete
+            </Box>
+            <Box
+              styleSheet={{
+                display: "flex",
                 marginBottom: "8px",
               }}
             >
@@ -200,24 +245,6 @@ const MessageList = (props) => {
               >
                 {new Date().toLocaleDateString()}
               </Text>
-              {/* <Button
-                label="Apagar"
-                styleSheet={{
-                  contrastColor: appConfig.theme.colors.neutrals["000"],
-                  mainColor: appConfig.theme.colors.primary[500],
-                  mainColorLight: appConfig.theme.colors.primary[400],
-                  mainColorStrong: appConfig.theme.colors.primary[600],
-                  position: "relative",
-                  marginLeft: "1rem",
-                  top: 0,
-                  right: 0,
-                  padding: "3px",
-                }}
-                onClick={(event) => {
-                  event.preventDefault();
-                  handleDeletarMensagem();
-                }}
-              /> */}
             </Box>
             {mensagem.texto}
           </Text>

@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import appConfig from "../config.json";
 import Title from "../Components/Title";
 import { useRouter } from "next/router";
-import PaginaChat from "./chat";
+
+const defaultUsername = MarcusUrani;
 
 const PaginaInicial = () => {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(defaultUsername);
   const [data, setData] = useState({});
   const router = useRouter();
 
@@ -83,7 +84,7 @@ const PaginaInicial = () => {
             </Text>
             <TextField
               value={username}
-              onChange={function (event) {
+              onChange={(event) => {
                 const valor = event.target.value;
                 setUsername(valor);
                 getData(valor);
