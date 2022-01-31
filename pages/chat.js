@@ -166,13 +166,8 @@ const ChatPage = () => {
       {listaMensagens.length === 0 && (
         <Image
           styleSheet={{
-            color: "#fff",
             zIndex: "999",
             position: "absolute",
-            top: 0,
-            bottom: 0,
-            left: "15%",
-            right: 0,
           }}
           src="https://flevix.com/wp-content/uploads/2019/07/Curve-Loading.gif"
           alt="Carregando"
