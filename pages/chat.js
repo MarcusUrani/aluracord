@@ -44,127 +44,142 @@ const ChatPage = () => {
   };
 
   return (
-    <Box
-      styleSheet={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: appConfig.theme.colors.primary[500],
-        backgroundImage: `url(https://i1.wp.com/nerdizmo.uai.com.br/wp-content/uploads/sites/29/2021/05/wallpapers-do-star-wars-17.jpg?ssl=1)`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundBlendMode: "multiply",
-        color: appConfig.theme.colors.neutrals["000"],
-      }}
-    >
+    <>
       <Box
         styleSheet={{
           display: "flex",
-          flexDirection: "column",
-          flex: 1,
-          boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
-          borderRadius: "5px",
-          backgroundColor: appConfig.theme.colors.neutrals[700],
-          height: "100%",
-          maxWidth: "95%",
-          maxHeight: "95vh",
-          padding: "32px",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: appConfig.theme.colors.primary[500],
+          backgroundImage: `url(https://i1.wp.com/nerdizmo.uai.com.br/wp-content/uploads/sites/29/2021/05/wallpapers-do-star-wars-17.jpg?ssl=1)`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundBlendMode: "multiply",
+          color: appConfig.theme.colors.neutrals["000"],
         }}
       >
-        <Header />
         <Box
           styleSheet={{
-            position: "relative",
             display: "flex",
-            flex: 1,
-            height: "80%",
-            backgroundColor: appConfig.theme.colors.neutrals[600],
             flexDirection: "column",
+            flex: 1,
+            boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
             borderRadius: "5px",
-            padding: "16px",
+            backgroundColor: appConfig.theme.colors.neutrals[700],
+            height: "100%",
+            maxWidth: "95%",
+            maxHeight: "95vh",
+            padding: "32px",
           }}
         >
-          <MessageList
-            mensagens={listaMensagens}
-            username={username}
-            setMensagens={setListaMensagens}
-          />
+          <Header />
           <Box
-            as="form"
             styleSheet={{
+              position: "relative",
               display: "flex",
-              alignItems: "center",
-            }}
-            onSubmit={(event) => {
-              event.preventDefault();
-              handleNovaMensagem(mensagem);
+              flex: 1,
+              height: "80%",
+              backgroundColor: appConfig.theme.colors.neutrals[600],
+              flexDirection: "column",
+              borderRadius: "5px",
+              padding: "16px",
             }}
           >
-            <TextField
-              value={mensagem}
-              onChange={(event) => {
-                const valor = event.target.value;
-                setMensagem(valor);
-              }}
-              onKeyPress={(event) => {
-                if (event.key === "Enter") {
-                  event.preventDefault();
-                  if (mensagem.length > 1) {
-                    handleNovaMensagem(mensagem);
-                  } else {
-                    alert("A campo de mensagem deve estar preenchido");
-                  }
-                }
-              }}
-              required
-              placeholder="Insira sua mensagem aqui..."
-              type="textarea"
-              styleSheet={{
-                width: "100%",
-                border: "0",
-                resize: "none",
-                borderRadius: "5px",
-                padding: "6px 8px",
-                backgroundColor: appConfig.theme.colors.neutrals[800],
-                marginRight: "12px",
-                color: appConfig.theme.colors.neutrals[200],
-              }}
+            <MessageList
+              mensagens={listaMensagens}
+              username={username}
+              setMensagens={setListaMensagens}
             />
-            <Button
-              colorVariant="dark"
-              type="submit"
-              iconName="arrowRight"
+            <Box
+              as="form"
               styleSheet={{
-                borderRadius: "50%",
-                padding: "0 3px 0 0",
-                minWidth: "50px",
-                minHeight: "50px",
-                fontSize: "20px",
-                marginBottom: "8px",
-                lineHeight: "0",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: appConfig.theme.colors.neutrals[300],
-                backgroundColor: appConfig.theme.colors.neutrals[400],
-                contrastColor: appConfig.theme.colors.neutrals["000"],
-                hover: {
-                  backgroundColor: appConfig.theme.colors.neutrals[500],
-                },
               }}
-            />
-            <ButtonSendSticker
-              onStickerClick={(sticker) => {
-                handleNovaMensagem(`:sticker:${sticker}`);
+              onSubmit={(event) => {
+                event.preventDefault();
+                handleNovaMensagem(mensagem);
               }}
-            />
-            {/* {listaMensagens.length === 0 && (
-              
-            )} */}
+            >
+              <TextField
+                value={mensagem}
+                onChange={(event) => {
+                  const valor = event.target.value;
+                  setMensagem(valor);
+                }}
+                onKeyPress={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    if (mensagem.length > 1) {
+                      handleNovaMensagem(mensagem);
+                    } else {
+                      alert("A campo de mensagem deve estar preenchido");
+                    }
+                  }
+                }}
+                required
+                placeholder="Insira sua mensagem aqui..."
+                type="textarea"
+                styleSheet={{
+                  width: "100%",
+                  border: "0",
+                  resize: "none",
+                  borderRadius: "5px",
+                  padding: "6px 8px",
+                  backgroundColor: appConfig.theme.colors.neutrals[800],
+                  marginRight: "12px",
+                  color: appConfig.theme.colors.neutrals[200],
+                }}
+              />
+              <Button
+                colorVariant="dark"
+                type="submit"
+                iconName="arrowRight"
+                styleSheet={{
+                  borderRadius: "50%",
+                  padding: "0 3px 0 0",
+                  minWidth: "50px",
+                  minHeight: "50px",
+                  fontSize: "20px",
+                  marginBottom: "8px",
+                  lineHeight: "0",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: appConfig.theme.colors.neutrals[300],
+                  backgroundColor: appConfig.theme.colors.neutrals[400],
+                  contrastColor: appConfig.theme.colors.neutrals["000"],
+                  hover: {
+                    backgroundColor: appConfig.theme.colors.neutrals[500],
+                  },
+                }}
+              />
+              <ButtonSendSticker
+                onStickerClick={(sticker) => {
+                  handleNovaMensagem(`:sticker:${sticker}`);
+                }}
+              />
+            </Box>
           </Box>
         </Box>
       </Box>
-    </Box>
+      {listaMensagens.length === 0 && (
+        <Image
+          styleSheet={{
+            color: "#fff",
+            zIndex: "999",
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            left: "15%",
+            right: 0,
+            width: window.innerWidth,
+          }}
+          src="https://flevix.com/wp-content/uploads/2019/07/Curve-Loading.gif"
+          alt="Carregando"
+        />
+      )}
+    </>
   );
 };
 
